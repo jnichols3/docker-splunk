@@ -77,24 +77,6 @@ wget -O /usr/bin/scloud.tar.gz ${SCLOUD_URL}
 tar -xf /usr/bin/scloud.tar.gz -C /usr/bin/
 rm /usr/bin/scloud.tar.gz
 
-# map os arch to busybox arch labels as needed
-ARCH=`arch`
-if [[ $ARCH = aarch64 ]]
-then
-  ARCH="armv8l"
-fi
-
-# Install busybox direct from the multiarch since EPEL isn't available yet for redhat8
-wget -O /bin/busybox https://busybox.net/downloads/binaries/1.28.1-defconfig-multiarch/busybox-${ARCH}
-chmod +x /bin/busybox
-
-# Enable busybox symlinks
-cd /bin
-BBOX_LINKS=( clear find diff hostname killall netstat nslookup ping ping6 readline route syslogd tail traceroute vi )
-for item in "${BBOX_LINKS[@]}"
-do
-  ln -s busybox $item || true
-done
 chmod u+s /bin/ping
 groupadd sudo
 
